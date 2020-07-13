@@ -1,0 +1,52 @@
+button a{
+	color:white;
+}
+
+.start{
+	font-size:2em;
+}
+.jumbotron{
+	/*background-color: red; */
+}
+.show{
+	display:none;
+}
+.dark-back{
+	background-color: #000;
+	color:white;
+}
+.input-times{
+	height:20vh;
+} 
+.placer{
+	margin-left:22%;
+}
+table {
+  border-collapse: collapse;
+}
+
+table, td, th {
+  border: 1px solid black;
+}
+
+.table-elem-conflict{
+	height:10vh;
+	width:100%;
+	background-color: #BD2640;
+	color:white;
+	text-align:center;
+}
+
+.table-elem-clear{
+	height:10vh;
+	width:100%;
+	color:white;
+	text-align:center;
+}
+
+@media only screen and (max-width: 767px) {  
+	.table-elem-clear{
+		height: 20vh;
+	}
+
+}

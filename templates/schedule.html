@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+{% block stylesheet %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='add_courses.css') }}">
+{% endblock %}
+{% block body%}
+
+{% if error %}
+	<div class="text-center">
+		<p style="font-size: 3em;color:red;font-weight: 800;">
+			{{error_message}}
+		</p>
+		<img src="https://i.pinimg.com/originals/d6/c1/70/d6c17022f1030039e7461637e2c5cceb.jpg">
+	</div>
+
+{% else %}
+	<h1 class="text-center"> Schedule Navigator :)</h1>
+	<nav aria-label="Page navigation example">	
+	  <ul class="pagination justify-content-center">
+	    {% for i in range(1, topN+1) %}
+	    {% if id == i %}
+	    	<li class="page-item"><a style="color:orange;"class="page-link" href="/schedule/{{i}}">{{i}}</a></li>
+		{% else %}	    	
+	    	<li class="page-item"><a class="page-link" href="/schedule/{{i}}">{{i}}</a></li>
+	    {% endif %}
+	    {% endfor %}
+	  </ul>
+	</nav>
+	<br>
+	
+	<table style="margin: 0 auto; width:50%">
+	  <tr>
+	  	<td></td>
+	    <th>Monday</th>
+	    <th>Tuesday</th>
+	    <th>Wednesday</th>
+	    <th>Thursday</th>
+	    <th>Friday</th>
+	  </tr>
+
+	  {% for i in range (8, 22) %}
+	  <tr>
+	  	<th scope="row">{{i}}:00</th>
+	  	
+	  	{% for j in range (0,5) %}
+	  	<td>
+	  		
+	  		{% for item in topFive[(j*24+i)] %}
+	  		<!-- checking for conflicts -->
+		  		{% if topFive[j*24+i]|length > 1%}
+		  			<div class="table-elem-conflict">
+		  				<strong>CONFLICT:</strong>
+		  				{{item}}
+		  			</div>
+		  			<br>
+		  		{% else %}
+		  		<div class="table-elem-clear"style="background-color: {{colorMap[item.split()[0].lower()]}};">
+		  			
+		  			{{item}}
+		  			
+		  		</div>
+		  		<br>
+		  		{% endif%}
+	  		{% endfor %}
+	  	</td>
+	    {% endfor %}
+	  </tr>
+	  {% endfor %}
+	 
+
+	</table>
+
+	<div class="text-center">
+		<button class="btn btn-primary">
+			<a style="color:white;"href="/">
+	  	 		Try A New Schedule
+	  	 	</a>
+		</button>	
+	</div>
+
+
+{% endif %}
+{% endblock %}
+ 

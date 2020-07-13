@@ -1,0 +1,170 @@
+{% extends "layout.html" %}
+{% block stylesheet %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='add_courses.css') }}">
+{% endblock %}
+
+{% block body%}
+<div class="jumbotron ">
+  <h1 class="display-4 text-center">Time Table Optimizer</h1>
+  <p class="lead text-center">Welcome to your time table optimizer!</p>
+  <p class="lead text-center">** uses 24 hour time **</p>
+  <p class="lead text-center">** use the back button to change your input times when the schedule is shown, so that your input is saved **</p>
+ 
+  <ul>
+  	<li><strong>All starting and ending class times must be entered as integers hours [9, 21] (9 to 21 inclusive)</strong></li>
+  </ul>
+  <p class="lead"><strong>Lecture Times Input:</strong>
+	<ul>
+	  <li>DO NOT INCLUDE DIFFERENT LECTURE SECTIONS THAT HAVE IDENTICAL LECTURE TIMES </li>
+	  <li>Different lecture sections are separated using a semi colon (;) </li>
+	  <li>Multiple lecture times within the same section get separated by commas (,)</li> 
+	  <br> 
+	  <li>
+	  	<strong>Example for ECE345 Lectures:</strong> 
+	  	<strong> Even though there are 3 lecture sections, they all have identical lecture times throughout the week. Therefore, you only need to write those times out once.</strong>
+	  	<li>
+		  	<strong>Expected: </strong>
+		  	<p>Monday 11 to 12, Wednesday 11 to 12, Friday 11 to 12</p>	
+	  	</li>
+	  </li>	
+	   <li>
+	  	<strong>Example for CSC343 Lectures:</strong> 
+	  	<strong> There are 3 lecture sections with two unique sets of lecture times throughout the week. Therefore, you need to write these unqiue sets out.</strong>
+	  	<li>
+		  	<strong>Expected: </strong>
+		  	<p> Monday 10 to 12,Wednesday 11 to 12 <strong>;</strong> Monday 14 to 16,Wednesday 14 to 15 </p>
+	  	</li>	
+	  </li>	
+	</ul>
+  </p>
+
+  <p class="lead"><strong>Tutorial Times Input:</strong>
+	<ul>
+	  <li>DO NOT INCLUDE DIFFERENT TUTORIAL SECTIONS THAT HAVE IDENTICAL TIMES </li>
+	  <li>Different tutorial sections are separated using a semi colon (;) </li>
+	  <li>Multiple tutorial times within the same section get separated by commas (,)</li> 
+	  <li>If this course does not have a tutorial, input dne </li>
+	  <br>
+	  <li>
+	  	<strong>Example for ECE345 Tutorials:</strong> 
+	  	<strong> Even though there are 5 tutorial sections, there are only 3 unqiue times. Therefore, you only need to write these 3 times out.</strong>
+	  	<li>
+		  	<strong>Expected: </strong>
+		  	<p>Monday 9 to 11;Thursday 9 to 11;Wednesday 16 to 18</p>	
+	  	</li>
+	  </li>
+	  
+	  <li>
+	  	<strong>Example for CSC343 Tutorials:</strong> 
+	  	<strong> There are NO tutorial sections. Therefore, dne is expected.</strong>
+	  	<li>
+		  	<strong>Expected: </strong>
+		  	<p>dne</p>	
+	  	</li>
+	  </li>
+	</ul>
+  </p>
+
+  <p class="lead"><strong>Practical Times Input:</strong>
+	<ul>
+	  <li>DO NOT INCLUDE DIFFERENT PRACTICAL SECTIONS THAT HAVE IDENTICAL TIMES </li>
+	  <li>Different practical sections are separated using a semi colon (;) </li>
+	  <li>Multiple practical times within the same section get separated by commas (,)</li> 
+	  <li>If this course does not have a practical, input dne </li>
+	  <br>
+	  <li>
+	  	<strong>Example for ECE345 Practicals:</strong> 
+	  	<strong> There are NO practical sections. Therefore, dne is expected.</strong>
+	  	<li>
+		  	<strong>Expected: </strong>
+		  	<p>dne</p>	
+	  	</li>
+	  </li>
+	  
+	  <li>
+	  	<strong>Example for ECE361 Practicals:</strong> 
+	  	<strong> There are 3 practical sections with 2 unique times. Therefore, input these 2 unique times.</strong>
+	  	<li>
+		  	<strong>Expected: </strong>
+		  	<p>Wednesday 15 to 18;Monday 9 to 12</p>	
+	  	</li>
+	  </li>
+	</ul>
+  </p>
+
+  <hr class="my-4">
+  <div class='text-center'>
+	  <p class="start">Let's get started!</p>
+	  <form action="{{ url_for('index') }}" method="post">
+	  	<p> How many courses? (MAX 6) </p>
+	  	<input type="number" name="number" min="1" max="6">
+	  	<div>
+	  		<br>
+	  		<button class="btn btn-primary">
+	  	 		Submit
+			</button>
+		</div>
+	  </form>
+	</div>
+</div>
+
+<form action="{{ url_for('schedule') }}" method="post">
+	<div class="all-courses placer">
+		{% for i in range(0,courseNumber) %}
+		<div class="card course-{{i}}" style="width: 70%;">
+		  <div class="card-body">
+		    <h5 class="card-title text-center">
+		    	<label for="course-{{i}}-code">Course Code: </label>
+		    	<input type="text" name="course-{{i}}-code" placeholder="ECE302" required>
+		    </h5>
+		   
+		    
+		    <div class="all-lecture-times">
+			    <h6 class="card-title"> Lecture Times
+			    </h6>
+			    
+			    <div class="card lect-times" style="width: 80%">
+			    	<label for="lect-{{i}}" class="dark-back text-center">Lectures </label>
+					<textarea class="input-times" type="text" name="lect-{{i}}" placeholder="Monday 11 to 13, Tuesday 15 to 16; Wednesday 9 to 11, Thursday 10 to 12 " required></textarea>
+					<br>	
+			    </div>
+			</div>
+
+			<div class="all-tutorial-times">
+			    <h6 class="card-title">Tutorial Times (Comma Separated)
+			    </h6>
+			    <div class="card tut-times" style="width: 80%">
+			    	<label for="tut-{{i}}" class="dark-back text-center">Tutorials </label>
+					<textarea class="input-times" type="text" name="tut-{{i}}" placeholder="Wednesday 9 to 11, Thursday 10 to 12 or dne" required></textarea>
+					<br>	
+			    </div>
+			</div>
+
+			<div class="all-practical-times">
+			    <h6 class="card-title ">Practical Times (Comma Separated)
+			    </h6>
+			    <div class="card pra-times" style="width: 80%">
+			    	<label for="pra-{{i}}" class="dark-back text-center">Practicals </label>
+					<textarea class="input-times"  type="text" name="pra-{{i}}" placeholder="Wednesday 9 to 11, Thursday 10 to 12 or dne" required></textarea>
+					<br>	
+			    </div>
+			</div>
+			   	
+		  </div>
+		</div>
+		<br>
+		{% endfor %}
+	</div>
+	<div class="text-center">
+		<button class="btn btn-primary">
+	  	 Get Best Schedule
+		</button>	
+	</div>
+	
+</form>
+
+{% endblock %}
+
+{% block script %}
+<script src="{{ url_for('static', filename='add_courses.js') }}"></script>
+{% endblock %}
